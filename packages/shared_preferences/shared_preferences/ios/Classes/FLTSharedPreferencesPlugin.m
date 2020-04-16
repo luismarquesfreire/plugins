@@ -64,16 +64,18 @@ static NSString *const CHANNEL_NAME = @"plugins.flutter.io/shared_preferences";
   }];
 }
 
+NSString * appDomain() {
+    return [@"group." stringByAppendingString: [[NSBundle mainBundle] bundleIdentifier]];
+}
+
 NSUserDefaults * mainUserDefaults() {
-    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-    return [[NSUserDefaults standardUserDefaults] initWithSuiteName:appDomain];
+    return [[NSUserDefaults standardUserDefaults] initWithSuiteName:appDomain()];
 }
 
 #pragma mark - Private
 
 static NSMutableDictionary *getAllPrefs() {
-  NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-  NSDictionary *prefs = [mainUserDefaults() persistentDomainForName:appDomain];
+  NSDictionary *prefs = [mainUserDefaults() persistentDomainForName:appDomain()];
   NSMutableDictionary *filteredPrefs = [NSMutableDictionary dictionary];
   if (prefs != nil) {
     for (NSString *candidateKey in prefs) {
